@@ -135,11 +135,11 @@ $("hl").onclick=e=>{e.preventDefault();$("md").innerHTML=`<div class="hd"><h2>Ri
 function fillBy(){const ids=[...new Set(UPD.map(u=>u.by).filter(Boolean))];if(user&&ids.length)user.profiles(ids).then(ps=>document.querySelectorAll("td[data-u]").forEach(td=>{const n=ps[td.dataset.u]?.name;if(n)td.textContent=n})).catch(()=>{})}
 function refresh(){const p=pg;filt();pg=p;draw()}
 async function updFU(){const r=cur;if(!r||!$("fus"))return;const e=FU["m"+r[0]],d=fd(r);let w="";
-if(d){let n="";try{n=(await user.profiles([e.u]))[e.u]?.name||""}catch(x){}w=`oleh ${esc(n||"manager")} · ${new Date(e.t).toLocaleString("id-ID")}`}
+if(d){let n=e.n||"";if(!n&&e.u)try{n=(await user.profiles([e.u]))[e.u]?.name||""}catch(x){}w=`oleh ${esc(n||"pengguna")} · ${new Date(e.t).toLocaleString("id-ID")}`}
 if(cur!==r||!$("fus"))return;$("fus").innerHTML=`<button class="fu ${d?"on":""}" data-m="${r[10]}" ${canW?"":"disabled"}>${d?"✓ Sudah difollowup":canW?"Belum difollowup · tandai sudah":"Belum difollowup"}</button> <small style="color:var(--mu)">${w}</small>`}
 function gate(r){if(ROLE!=="public")return true;if(r[5]<0){alert("Member ini belum punya PIC Salper. Login sebagai editor/kontributor untuk mengubah status.");return false}const c=prompt("Masukkan 4 digit terakhir Salper ID untuk "+S[r[5]][1]+":");if(c===null)return false;if(c.trim()!==String(S[r[5]][0]).trim().slice(-4)){alert("Kode salah.");return false}return true}
-function tog(i){if(!db||!canW)return;const r=R[i];if(!gate(r))return;const k="m"+r[0],pv=FU[k],v={s:fd(r)?0:1,t:Date.now(),u:uid};FU[k]=v;refresh();updFU();
-wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:r[0],status:v.s,updated_by:uid||null,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)FU[k]=pv;else delete FU[k];refresh();updFU();alert("Gagal menyimpan status. Coba lagi.")})}
+function tog(i){if(!db||!canW)return;const r=R[i];if(!gate(r))return;const k="m"+r[0],pv=FU[k],v={s:fd(r)?0:1,t:Date.now(),u:uid,n:ROLE==="public"?S[r[5]][1]:(window.UNAME||null)};FU[k]=v;refresh();updFU();
+wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:r[0],status:v.s,updated_by:uid||null,by_name:v.n||null,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)FU[k]=pv;else delete FU[k];refresh();updFU();alert("Gagal menyimpan status. Coba lagi.")})}
 
 /*MK*/
 function mk(A){
@@ -209,9 +209,9 @@ user={profiles:async ids=>{ids=ids.filter(Boolean);if(!ids.length)return {};cons
 CAN=ROLE==="editor";if(!CAN)WHY="Upload data hanya untuk editor. Klik Login editor di pojok kanan atas.";
 canW=ROLE==="editor"||ROLE==="contributor"||ROLE==="public";
 if(!canW){$("nt").hidden=false;$("nt").textContent="Mode lihat saja: status follow-up hanya bisa diubah oleh contributor/editor."}
-const o={};for(let f=0;;f+=1000){const {data,error}=await sb.from("followups").select("*").range(f,f+999);if(error)throw error;data.forEach(x=>o["m"+x.member_no]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by});if(data.length<1000)break}
+const o={};for(let f=0;;f+=1000){const {data,error}=await sb.from("followups").select("*").range(f,f+999);if(error)throw error;data.forEach(x=>o["m"+x.member_no]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by,n:x.by_name});if(data.length<1000)break}
 FU=o;refresh();updFU();
-sb.channel("fu").on("postgres_changes",{event:"*",schema:"public",table:"followups"},p=>{const x=p.new;if(!x||!x.member_no)return;FU["m"+x.member_no]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by};refresh();updFU()}).subscribe()}
+sb.channel("fu").on("postgres_changes",{event:"*",schema:"public",table:"followups"},p=>{const x=p.new;if(!x||!x.member_no)return;FU["m"+x.member_no]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by,n:x.by_name};refresh();updFU()}).subscribe()}
 catch(e){WHY="Terjadi kesalahan: "+esc(String(e&&e.message||e))}})();
 </script>
 <script>
@@ -219,7 +219,7 @@ const sb=window.sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY),L=id=>d
 async function start(session){
  window.SESSION=session||{user:{id:""}};let p=null;
  if(session){const r=await sb.from("profiles").select("name,role").eq("id",session.user.id).single();p=r.data}
- window.ROLE=session?((p&&p.role)||"viewer"):"public";
+ window.ROLE=session?((p&&p.role)||"viewer"):"public";window.UNAME=session?((p&&p.name)||session.user.email||""):"";
  const {data:blob,error}=await sb.storage.from("dashboard").download("data.json.gz");
  if(error){msg("Gagal memuat data: "+error.message);return}
  window.__D=await new Response(blob.stream().pipeThrough(new DecompressionStream("gzip"))).json();
