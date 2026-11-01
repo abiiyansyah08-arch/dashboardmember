@@ -61,8 +61,8 @@ tbody tr:nth-child(even){background:color-mix(in srgb,var(--tx) 3%,transparent)}
 </main>
 <div id="ov"><div class="md" id="md"></div></div>
 </div><div id="lg" style="max-width:340px;margin:12vh auto;padding:20px;font:14px system-ui,sans-serif">
-<h2 style="margin:0 0 4px">Dashboard Control Member Mitra10</h2><p id="lm" style="color:#6b7380;margin:0 0 12px">Masuk untuk melanjutkan</p>
-<input id="em" type="email" placeholder="Email" autocomplete="username" style="width:100%;margin-bottom:8px"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" style="width:100%;margin-bottom:8px"><button id="go" style="width:100%">Masuk</button></div>
+<h2 style="margin:0 0 4px">Dashboard Control Member Mitra10</h2><p id="lm" style="color:#6b7380;margin:0 0 12px">Memuat data…</p>
+<input id="em" hidden type="email" placeholder="Email" autocomplete="username" style="width:100%;margin-bottom:8px"><input id="pw" hidden type="password" placeholder="Password" autocomplete="current-password" style="width:100%;margin-bottom:8px"><button id="go" hidden style="width:100%">Masuk</button></div>
 <div id="who" hidden style="position:fixed;top:6px;right:12px;font-size:12px;z-index:30;background:var(--card);border:1px solid var(--bd);border-radius:99px;padding:3px 10px"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
@@ -138,7 +138,7 @@ async function updFU(){const r=cur;if(!r||!$("fus"))return;const e=FU["m"+r[0]],
 if(d){let n="";try{n=(await user.profiles([e.u]))[e.u]?.name||""}catch(x){}w=`oleh ${esc(n||"manager")} · ${new Date(e.t).toLocaleString("id-ID")}`}
 if(cur!==r||!$("fus"))return;$("fus").innerHTML=`<button class="fu ${d?"on":""}" data-m="${r[10]}" ${canW?"":"disabled"}>${d?"✓ Sudah difollowup":canW?"Belum difollowup · tandai sudah":"Belum difollowup"}</button> <small style="color:var(--mu)">${w}</small>`}
 function tog(i){if(!db||!canW)return;const r=R[i],k="m"+r[0],pv=FU[k],v={s:fd(r)?0:1,t:Date.now(),u:uid};FU[k]=v;refresh();updFU();
-wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:r[0],status:v.s,updated_by:uid,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)FU[k]=pv;else delete FU[k];refresh();updFU();alert("Gagal menyimpan status. Coba lagi.")})}
+wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:r[0],status:v.s,updated_by:uid||null,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)FU[k]=pv;else delete FU[k];refresh();updFU();alert("Gagal menyimpan status. Coba lagi.")})}
 
 /*MK*/
 function mk(A){
@@ -204,9 +204,9 @@ catch(x){const m={not_writer:"Akun Anda tidak punya izin edit untuk memperbarui 
 modal(`<div class="hd"><h2>Gagal menerapkan</h2><button id="cl">\u2715 Tutup</button></div><p>${m}</p>`)}}
 filt();
 (async()=>{try{uid=SESSION.user.id;db=true;
-user={profiles:async ids=>{const {data}=await sb.from("profiles").select("id,name").in("id",ids);const o={};(data||[]).forEach(p=>o[p.id]=p);return o}};
-CAN=ROLE==="editor";if(!CAN)WHY="Upload data butuh peran editor. Minta admin mengubah peran Anda.";
-canW=ROLE==="editor"||ROLE==="contributor";
+user={profiles:async ids=>{ids=ids.filter(Boolean);if(!ids.length)return {};const {data}=await sb.from("profiles").select("id,name").in("id",ids);const o={};(data||[]).forEach(p=>o[p.id]=p);return o}};
+CAN=ROLE==="editor";if(!CAN)WHY="Upload data hanya untuk editor. Klik Login editor di pojok kanan atas.";
+canW=ROLE==="editor"||ROLE==="contributor"||ROLE==="public";
 if(!canW){$("nt").hidden=false;$("nt").textContent="Mode lihat saja: status follow-up hanya bisa diubah oleh contributor/editor."}
 const o={};for(let f=0;;f+=1000){const {data,error}=await sb.from("followups").select("*").range(f,f+999);if(error)throw error;data.forEach(x=>o["m"+x.member_no]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by});if(data.length<1000)break}
 FU=o;refresh();updFU();
@@ -216,19 +216,22 @@ catch(e){WHY="Terjadi kesalahan: "+esc(String(e&&e.message||e))}})();
 <script>
 const sb=window.sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY),L=id=>document.getElementById(id),msg=t=>L("lm").textContent=t;
 async function start(session){
- L("em").hidden=L("pw").hidden=L("go").hidden=true;window.SESSION=session;msg("Memuat data…");
- const {data:p}=await sb.from("profiles").select("name,role").eq("id",session.user.id).single();
- window.ROLE=(p&&p.role)||"viewer";
+ window.SESSION=session||{user:{id:""}};let p=null;
+ if(session){const r=await sb.from("profiles").select("name,role").eq("id",session.user.id).single();p=r.data}
+ window.ROLE=session?((p&&p.role)||"viewer"):"public";
  const {data:blob,error}=await sb.storage.from("dashboard").download("data.json.gz");
  if(error){msg("Gagal memuat data: "+error.message);return}
  window.__D=await new Response(blob.stream().pipeThrough(new DecompressionStream("gzip"))).json();
  L("lg").hidden=true;L("root").hidden=false;
- const w=L("who");w.hidden=false;w.innerHTML=((p&&p.name)||session.user.email)+" · "+ROLE+' · <a href="#" id="lo">Keluar</a>';
- L("lo").onclick=async e=>{e.preventDefault();await sb.auth.signOut();location.reload()};
- const s=document.createElement("script");s.textContent=L("app").textContent;document.body.appendChild(s)}
-L("go").onclick=async()=>{msg("Masuk…");const {data,error}=await sb.auth.signInWithPassword({email:L("em").value.trim(),password:L("pw").value});if(error)msg("Gagal: "+error.message);else start(data.session)};
+ const w=L("who");w.hidden=false;
+ w.innerHTML=session?(((p&&p.name)||session.user.email)+" \u00b7 "+ROLE+' \u00b7 <a href="#" id="lo">Keluar</a>'):'<a href="#" id="li">Login editor</a>';
+ if(session)L("lo").onclick=async e=>{e.preventDefault();await sb.auth.signOut();location.reload()};
+ else L("li").onclick=e=>{e.preventDefault();showLogin()};
+ const sc=document.createElement("script");sc.textContent=L("app").textContent;document.body.appendChild(sc)}
+function showLogin(){L("root").hidden=true;L("who").hidden=true;L("lg").hidden=false;L("em").hidden=L("pw").hidden=L("go").hidden=false;L("lm").innerHTML='Login editor \u00b7 <a href="#" onclick="location.reload();return false">Kembali</a>'}
+L("go").onclick=async()=>{msg("Masuk\u2026");const {error}=await sb.auth.signInWithPassword({email:L("em").value.trim(),password:L("pw").value});if(error)msg("Gagal: "+error.message);else location.reload()};
 L("pw").onkeydown=e=>{if(e.key==="Enter")L("go").click()};
 L("root").hidden=true;
-sb.auth.getSession().then(({data})=>{if(data.session)start(data.session)});
+sb.auth.getSession().then(({data})=>start(data.session)).catch(e=>msg("Gagal: "+e.message));
 </script>
 </body></html>
