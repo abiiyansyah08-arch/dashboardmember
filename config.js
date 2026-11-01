@@ -1,1 +1,2 @@
-
+const SUPABASE_URL = "https://aidhaxobfykxdubyfery.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpZGhheG9iZnlreGR1YnlmZXJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM1MjQ3OTYsImV4cCI6MjEwOTEwMDc5Nn0.6zj4jjvrdbEEjGgTD8jpiKx1RfM94hlop07wOQoweDo";
