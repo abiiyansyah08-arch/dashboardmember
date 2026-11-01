@@ -137,7 +137,8 @@ function refresh(){const p=pg;filt();pg=p;draw()}
 async function updFU(){const r=cur;if(!r||!$("fus"))return;const e=FU["m"+r[0]],d=fd(r);let w="";
 if(d){let n="";try{n=(await user.profiles([e.u]))[e.u]?.name||""}catch(x){}w=`oleh ${esc(n||"manager")} · ${new Date(e.t).toLocaleString("id-ID")}`}
 if(cur!==r||!$("fus"))return;$("fus").innerHTML=`<button class="fu ${d?"on":""}" data-m="${r[10]}" ${canW?"":"disabled"}>${d?"✓ Sudah difollowup":canW?"Belum difollowup · tandai sudah":"Belum difollowup"}</button> <small style="color:var(--mu)">${w}</small>`}
-function tog(i){if(!db||!canW)return;const r=R[i],k="m"+r[0],pv=FU[k],v={s:fd(r)?0:1,t:Date.now(),u:uid};FU[k]=v;refresh();updFU();
+function gate(r){if(ROLE!=="public")return true;if(r[5]<0){alert("Member ini belum punya PIC Salper. Login sebagai editor/kontributor untuk mengubah status.");return false}const c=prompt("Masukkan 4 digit terakhir Salper ID untuk "+S[r[5]][1]+":");if(c===null)return false;if(c.trim()!==String(S[r[5]][0]).trim().slice(-4)){alert("Kode salah.");return false}return true}
+function tog(i){if(!db||!canW)return;const r=R[i];if(!gate(r))return;const k="m"+r[0],pv=FU[k],v={s:fd(r)?0:1,t:Date.now(),u:uid};FU[k]=v;refresh();updFU();
 wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:r[0],status:v.s,updated_by:uid||null,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)FU[k]=pv;else delete FU[k];refresh();updFU();alert("Gagal menyimpan status. Coba lagi.")})}
 
 /*MK*/
