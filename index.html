@@ -114,13 +114,16 @@ $("ch").onclick=e=>{const b=e.target.closest(".chip");if(b){CHS[b.dataset.c][2](
 $("sm").onclick=e=>{const z=e.target.closest(".zb"),p=e.target.closest(".zr");if(z){$("fz").value=$("fz").value===z.dataset.z?"":z.dataset.z;filt()}else if(p){$("fp").value=$("fp").value===p.dataset.p?"":p.dataset.p;filt()}else if(e.target.id==="rmore"){SHALL=!SHALL;summary()}else if(e.target.id==="rh"){RH=!RH;try{localStorage.setItem("rh",RH?"1":"0")}catch(x){}summary()}};
 $("sm").onchange=e=>{if(e.target.id==="rs"){RS=e.target.value;summary()}};
 function bars(a,lab){const m=Math.max(...a,1);return `<div class="vc">${a.map((v,i)=>`<div title="${lab[i]}: ${N.format(v)}"><span>${v>=1e6?(v/1e6).toFixed(0)+"jt":N.format(v)}</span><i style="height:${Math.max(0,v)/m*85}%"></i><span>${lab[i]}</span></div>`).join("")}</div>`}
+function wkCard(r){const w=r[10];if(!w||!w.length)return"";const t=w.reduce((a,b)=>a+b,0),mon=BLN[r[9].length-1]||"";
+return `<div class="cd"><h3>Progress transaksi weekly${mon?" \u2013 "+mon:""} (Rp)</h3>${t>0?bars(w,w.map((_,i)=>"Mg "+(i+1))):"<p style=\"color:var(--mu);margin:6px 0\">Belum ada transaksi weekly.</p>"}${t>0?`<p style="color:var(--mu);margin:8px 0 0;font-size:13px">Total ${rp(t)} \u00b7 tertinggi Minggu ${w.indexOf(Math.max(...w))+1}</p>`:""}</div>`}
 function detail(r){const p=pic(r),cm=Math.max(...r[7],1),cs=CAT.map((c,i)=>[c,r[7][i]]).sort((a,b)=>b[1]-a[1]);
 $("md").innerHTML=`<div class="hd"><div><h2>${esc(r[1])}</h2><span style="color:var(--mu)">No Member ${r[0]}</span></div><button id="cl">✕ Tutup</button></div>
 <div class="g"><div><small>PIC Salper ID</small>${p[0]}</div><div><small>PIC Salper Name</small>${esc(p[1])}</div><div><small>No Member</small>${r[0]}</div><div><small>Nama Customer</small>${esc(r[1])}</div><div><small>Phone No WA</small><a class="wa" target="_blank" rel="noopener" href="${wa(r[2])}">${r[2]}</a></div><div><small>Sales YTD</small>${rp(r[3])}</div><div><small>Ket Pareto</small><span class="tag p${r[4]}">${r[4]?"Pareto":"No"}</span></div><div><small>Terakhir belanja</small>${lastBuy(r)}</div></div>
 <div class="act"><div><a class="wb" target="_blank" rel="noopener" href="${wa(r[2])}">Chat via WhatsApp</a> <span id="fus"></span></div>${top5(r)}</div>
 <div class="w2">${fn5(r)}${habit(r)}</div>
 <div class="cd"><h3>Value berbelanja per category</h3>${cs.map(c=>`<div class="hb"><span>${c[0]}</span><div><i style="width:${Math.max(0,c[1])/cm*100}%"></i></div><em>${cp(c[1])}</em></div>`).join("")}</div>
-<div class="w2"><div class="cd"><h3>Frequency visit by month</h3>${bars(r[8],BLN)}</div><div class="cd"><h3>Transaction by month (Rp)</h3>${bars(r[9],BLN)}</div></div>`;
+<div class="w2"><div class="cd"><h3>Frequency visit by month</h3>${bars(r[8],BLN)}</div><div class="cd"><h3>Transaction by month (Rp)</h3>${bars(r[9],BLN)}</div></div>
+${wkCard(r)}`;
 cur=r;updFU();$("ov").classList.add("on");$("cl").onclick=()=>$("ov").classList.remove("on")}
 $("tb").onclick=e=>{const b=e.target.closest(".fu");if(b){tog(+b.dataset.m);return}const tr=e.target.closest("tr");if(!tr||e.target.closest("a"))return;detail(R[tr.dataset.i])};
 $("th").onclick=e=>{const i=+e.target.dataset.i;if(isNaN(i))return;sd=sk==i?-sd:(COLS[i][2]?-1:1);sk=i;filt()};
@@ -144,7 +147,7 @@ wq=wq.then(async()=>{const {error}=await sb.from("followups").upsert({member_no:
 /*MK*/
 function mk(A){
 const H=(A[1]||[]).map(x=>x==null?"":String(x).trim()),ix=n=>{const i=H.indexOf(n);if(i<0)throw new Error("Kolom '"+n+"' tidak ditemukan di baris header (baris ke-2)");return i};
-const iNo=ix("Member No"),iNm=ix("Member Name"),iPh=ix("Phone"),iS=ix("Sales Exclude"),iP=ix("Is Pareto"),iY=ix("YTD"),iSI=ix("Salper ID"),iSN=ix("Salper Name"),iZ=ix("Zone");
+const iNo=ix("Member No"),iNm=ix("Member Name"),iPh=ix("Phone"),iS=ix("Sales Exclude"),iP=ix("Is Pareto"),iY=ix("YTD"),iSI=ix("Salper ID"),iSN=ix("Salper Name"),iZ=ix("Zone"),wc=H.map((h,i)=>/^week\s*\d+$/i.test(h)?i:-1).filter(i=>i>=0);
 const cc=[];for(let i=iP+1;i<iY;i++)cc.push(i);if(!cc.length)throw new Error("Kolom category tidak ditemukan");
 const cn=cc.map(i=>H[i].toLowerCase().replace(/ and /g," & ").replace(/\b\w/g,c=>c.toUpperCase()));
 const nm=iSI-iY-1;if(nm<2||nm%2)throw new Error("Kolom bulan (frequency/transaction) tidak sesuai format");const M=nm/2;
@@ -156,7 +159,7 @@ const sid=[...new Map(rows.filter(r=>r[iSI]!=null&&String(r[iSI]).trim()!==""&&S
 const mi=new Map(sid.map((x,i)=>[x[0],i]));let sum=0;
 const out=rows.map(r=>{const s=+r[iS]||0;cum+=s/tot;let ph=String(r[iPh]??"").replace(/\D/g,"");if(ph.slice(0,2)!=="62")ph="62"+ph.replace(/^0+/,"");
 const par=cached?(r[iP]==="Pareto"?1:0):(cum<0.8000001?1:0),si=String(r[iSI]??"").trim(),v=Math.round(s);sum+=v;
-return [String(r[iNo]),String(r[iNm]??"").trim(),ph,v,par,mi.has(si)?mi.get(si):-1,String(r[iZ]??""),cc.map(i=>Math.round(+r[i]||0)),Array.from({length:M},(_,j)=>Math.round(+r[iY+1+j]||0)),Array.from({length:M},(_,j)=>Math.round(+r[iY+1+M+j]||0))]});
+return [String(r[iNo]),String(r[iNm]??"").trim(),ph,v,par,mi.has(si)?mi.get(si):-1,String(r[iZ]??""),cc.map(i=>Math.round(+r[i]||0)),Array.from({length:M},(_,j)=>Math.round(+r[iY+1+j]||0)),Array.from({length:M},(_,j)=>Math.round(+r[iY+1+M+j]||0)),wc.map(i=>Math.round(+r[i]||0))]});
 let me=M;while(me>1&&out.every(r=>!r[8][me-1]&&!r[9][me-1]))me--;if(me<M)out.forEach(r=>{r[8]=r[8].slice(0,me);r[9]=r[9].slice(0,me)});
 const per=String(A[0]?.[0]??"").replace(/^periode\s*/i,"").replace(/\s*-\s*/g,"\u2013").trim();
 return {s:sid.map(x=>[x[0],x[1]]),r:out,c:cn,per,tot:sum}}
