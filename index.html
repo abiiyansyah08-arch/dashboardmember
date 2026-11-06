@@ -133,7 +133,7 @@ document.onkeydown=e=>{if(e.key=="Escape")$("ov").classList.remove("on")};
 $("pv").onclick=()=>{pg--;draw()};$("nx").onclick=()=>{pg++;draw()};
 const UPD=D.u;
 const LU=UPD[0],tgl=s=>new Date(s+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
-$("lu").innerHTML=`Periode ${LU.per} · <b>Data terakhir diperbarui: ${tgl(LU.at)}</b> · <a href="#" id="hl" style="color:var(--ac2)">Riwayat update</a><br>Klik No Member untuk detail · klik No WA untuk buka WhatsApp`;
+$("lu").innerHTML=`Periode ${LU.per} · <b>Data terakhir diperbarui: ${tgl(LU.at)}</b> · kolom weekly: ${R.some(r=>r[10]&&r[10].length)?"ada":"belum ada"} · v3 · <a href="#" id="hl" style="color:var(--ac2)">Riwayat update</a><br>Klik No Member untuk detail · klik No WA untuk buka WhatsApp`;
 $("hl").onclick=e=>{e.preventDefault();$("md").innerHTML=`<div class="hd"><h2>Riwayat update data</h2><button id="cl">✕ Tutup</button></div><div class="tw" style="margin-top:12px"><table style="min-width:0"><thead><tr><th>Tanggal update</th><th>Periode</th><th>File sumber</th><th class="n">Member</th><th class="n">Ada PIC</th><th class="n">Pareto</th><th class="n">Total Sales</th><th>Oleh</th></tr></thead><tbody>${UPD.map(u=>`<tr style="cursor:default"><td>${tgl(u.at)}</td><td>${u.per}</td><td>${esc(u.file)}</td><td class="n">${N.format(u.n)}</td><td class="n">${N.format(u.pic)}</td><td class="n">${N.format(u.par)}</td><td class="n">${rp(u.sales)}</td><td data-u="${esc(u.by||"")}">–</td></tr>`).join("")}</tbody></table></div><p style="color:var(--mu);font-size:12px">Status follow-up tersimpan terpisah dan tidak hilang saat data diperbarui.</p>`;$("ov").classList.add("on");$("cl").onclick=()=>$("ov").classList.remove("on");fillBy()};
 function fillBy(){const ids=[...new Set(UPD.map(u=>u.by).filter(Boolean))];if(user&&ids.length)user.profiles(ids).then(ps=>document.querySelectorAll("td[data-u]").forEach(td=>{const n=ps[td.dataset.u]?.name;if(n)td.textContent=n})).catch(()=>{})}
 function refresh(){const p=pg;filt();pg=p;draw()}
@@ -223,9 +223,11 @@ async function start(session){
  window.SESSION=session||{user:{id:""}};let p=null;
  if(session){const r=await sb.from("profiles").select("name,role").eq("id",session.user.id).single();p=r.data}
  window.ROLE=session?((p&&p.role)||"viewer"):"public";window.UNAME=session?((p&&p.name)||session.user.email||""):"";
- const {data:blob,error}=await sb.storage.from("dashboard").download("data.json.gz");
+ const {data:su,error}=await sb.storage.from("dashboard").createSignedUrl("data.json.gz",300);
  if(error){msg("Gagal memuat data: "+error.message);return}
- window.__D=await new Response(blob.stream().pipeThrough(new DecompressionStream("gzip"))).json();
+ const rs=await fetch(su.signedUrl+"&t="+Date.now(),{cache:"no-store"});
+ if(!rs.ok){msg("Gagal memuat data: HTTP "+rs.status);return}
+ window.__D=await new Response(rs.body.pipeThrough(new DecompressionStream("gzip"))).json();
  L("lg").hidden=true;L("root").hidden=false;
  const w=L("who");w.hidden=false;
  w.innerHTML=session?(((p&&p.name)||session.user.email)+" \u00b7 "+ROLE+' \u00b7 <a href="#" id="lo">Keluar</a>'):'<a href="#" id="li">Login editor</a>';
