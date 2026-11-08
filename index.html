@@ -67,7 +67,13 @@ header h1{margin:0;font-size:21px;line-height:1.15;font-weight:750;letter-spacin
 .tabs{display:flex;align-items:center;gap:4px;padding:4px;background:color-mix(in srgb,var(--tx) 7%,transparent);border-radius:13px;max-width:100%;overflow-x:auto}
 .tabs button{margin:0;border:0;background:transparent;border-radius:10px;padding:9px 16px;font-weight:600;color:var(--mu);display:inline-flex;gap:8px;align-items:center;white-space:nowrap}.tabs button svg{width:16px;height:16px;flex:none}.tabs button:hover{color:var(--tx)}
 .tabs button.on{background:var(--card);color:var(--ac2);box-shadow:0 1px 4px rgba(0,0,0,.14)}.bdg{background:var(--ac);color:#fff;border-radius:99px;font-size:11px;font-weight:700;padding:1px 7px;line-height:1.5}.bdg[hidden]{display:none}
-@media(max-width:640px){.hint{display:none}.logo{width:38px;height:38px;border-radius:11px}header h1{font-size:18px}header{padding:14px 12px 4px}.tabs button{padding:8px 12px}}#as details summary{cursor:pointer}#as .it{font-size:12px;color:var(--mu);margin-top:3px}</style></head><body><div id="root">
+.tabs{padding:5px;gap:6px;border-radius:16px;background:var(--card);border:1px solid var(--bd);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.tabs button{padding:13px 24px;font-size:16px;border-radius:12px;gap:10px;color:var(--tx);font-weight:650;transition:background .15s,color .15s,box-shadow .15s,transform .1s}
+.tabs button svg{width:20px;height:20px}
+.tabs button:hover{background:color-mix(in srgb,var(--ac2) 11%,transparent);color:var(--ac2)}
+.tabs button.on,.tabs button.on:hover{background:linear-gradient(135deg,color-mix(in srgb,var(--ac2) 86%,#fff),var(--ac2));color:#fff;box-shadow:0 6px 16px color-mix(in srgb,var(--ac2) 40%,transparent)}
+.tabs button:active{transform:scale(.97)}
+@media(max-width:640px){.hint{display:none}.logo{width:38px;height:38px;border-radius:11px}header h1{font-size:18px}header{padding:14px 12px 4px}.tabrow .tabs{width:100%;gap:3px;padding:4px}.tabrow .tabs button{flex:1 1 0;min-width:0;white-space:normal;flex-wrap:wrap;justify-content:center;text-align:center;line-height:1.2;padding:10px 4px;font-size:12.5px;gap:4px}.tabrow .tabs button svg{display:none}}#as details summary{cursor:pointer}#as .it{font-size:12px;color:var(--mu);margin-top:3px}</style></head><body><div id="root">
 <header>
 <div class="hbar"><div class="brand"><span class="logo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span><div><h1>Dashboard Control Member</h1><span class="bs">Mitra10 QBig BSD</span></div></div><div id="hside"></div></div>
 <p id="lu"></p>
@@ -86,7 +92,6 @@ header h1{margin:0;font-size:21px;line-height:1.15;font-weight:750;letter-spacin
 <div class="pg"><span id="inf"></span><span><button id="pv">‹ Prev</button> <button id="nx">Next ›</button></span></div>
 </main>
 <main id="as" hidden>
-<p style="color:var(--mu);font-size:13px;margin:4px 0 0">PIC dan Zone diambil dari sheet Frequency &amp; Category (dicocokkan lewat No Member, lalu No WA/nama). Jika customer belum ada PIC, dipakai Salper Name dan Zone teratas di sheet After Sales. Klik logo WhatsApp untuk chat dengan pesan standar, lalu centang setelah difollow-up.</p>
 <div id="ask"></div>
 <div class="bar"><input id="aq" placeholder="Cari customer / no WA / item…"><select id="ah"><option value="due">H+1 &amp; terlewat (belum follow-up)</option><option value="h1">H+1 saja</option><option value="h0">Hari H / belum jatuh tempo</option><option value="done">Sudah follow-up</option><option value="all">Semua</option></select><select id="as_pic"></select><select id="as_zone"></select></div>
 <div id="acl"></div>
@@ -166,7 +171,7 @@ document.onkeydown=e=>{if(e.key=="Escape")$("ov").classList.remove("on")};
 $("pv").onclick=()=>{pg--;draw()};$("nx").onclick=()=>{pg++;draw()};
 const UPD=D.u;
 const LU=UPD[0],tgl=s=>new Date(s+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
-{const wk=R.some(r=>r[11]&&r[11].length);$("lu").innerHTML=`<span class="pl"><i>Periode</i><b>${LU.per}</b></span><span class="pl"><i>Data diperbarui</i><b>${tgl(LU.at)}</b></span><span class="pl ${wk?"ok":"no"}"><i>Weekly</i><b>${wk?"Tersedia":"Belum ada"}</b></span><a href="#" id="hl" class="pl lk">Riwayat update</a><span class="pl v">v15</span>`}
+{const wk=R.some(r=>r[11]&&r[11].length);$("lu").innerHTML=`<span class="pl"><i>Periode</i><b>${LU.per}</b></span><span class="pl"><i>Data diperbarui</i><b>${tgl(LU.at)}</b></span><span class="pl ${wk?"ok":"no"}"><i>Weekly</i><b>${wk?"Tersedia":"Belum ada"}</b></span><a href="#" id="hl" class="pl lk">Riwayat update</a><span class="pl v">v16</span>`}
 $("hl").onclick=e=>{e.preventDefault();$("md").innerHTML=`<div class="hd"><h2>Riwayat update data</h2><button id="cl">✕ Tutup</button></div><div class="tw" style="margin-top:12px"><table style="min-width:0"><thead><tr><th>Tanggal update</th><th>Periode</th><th>File sumber</th><th class="n">Member</th><th class="n">Ada PIC</th><th class="n">Pareto</th><th class="n">Total Sales</th><th>Oleh</th></tr></thead><tbody>${UPD.map(u=>`<tr style="cursor:default"><td>${tgl(u.at)}</td><td>${u.per}</td><td>${esc(u.file)}</td><td class="n">${N.format(u.n)}</td><td class="n">${N.format(u.pic)}</td><td class="n">${N.format(u.par)}</td><td class="n">${rp(u.sales)}</td><td data-u="${esc(u.by||"")}">–</td></tr>`).join("")}</tbody></table></div><p style="color:var(--mu);font-size:12px">Status follow-up tersimpan terpisah dan tidak hilang saat data diperbarui.</p>`;$("ov").classList.add("on");$("cl").onclick=()=>$("ov").classList.remove("on");fillBy()};
 function fillBy(){const ids=[...new Set(UPD.map(u=>u.by).filter(Boolean))];if(user&&ids.length)user.profiles(ids).then(ps=>document.querySelectorAll("td[data-u]").forEach(td=>{const n=ps[td.dataset.u]?.name;if(n)td.textContent=n})).catch(()=>{})}
 function refresh(){const p=pg;filt();pg=p;draw()}
