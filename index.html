@@ -54,7 +54,11 @@ tbody tr:nth-child(even){background:color-mix(in srgb,var(--tx) 3%,transparent)}
 .acm{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}.acm div:last-child{grid-column:1/-1}.acm small,.aci>small{display:block;color:var(--mu);font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:2px}.acm b{font-size:13.5px}
 .aci ul{list-style:none;margin:0;padding:0}.aci li{display:flex;gap:10px;font-size:13px;padding:5px 0;border-top:1px solid var(--bd)}.aci .q{flex:0 0 74px;font-weight:600;font-variant-numeric:tabular-nums}.aci summary{cursor:pointer;color:var(--ac2);font-size:13px;padding-top:6px}
 .ac .fu{width:100%;padding:9px;border-radius:10px;font-weight:600}.ac .fu.on{background:#16a34a;border-color:#16a34a;color:#fff}.pg{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-.dbh{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:12px 0}.dbh .chips{margin:0}#asx{margin:12px 0}#asx:empty{display:none}.asr{display:flex;gap:22px;align-items:center;flex-wrap:wrap}.asr b{display:block;font-size:22px}.asr small{color:var(--mu);font-size:12px}.asr button{margin-left:auto}.wab{display:inline-flex;flex:none}.wab:hover svg{filter:brightness(.9)}header{max-width:1280px;margin:0 auto;padding:18px 20px 6px}.hbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.dbh{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:12px 0}.dbh .chips{margin:0}#asx{margin:12px 0}#asx:empty{display:none}.asr{display:flex;gap:22px;align-items:center;flex-wrap:wrap}.asr b{display:block;font-size:22px}.asr small{color:var(--mu);font-size:12px}.asr button{margin-left:auto}.wab{display:inline-flex;flex:none}.wab:hover svg{filter:brightness(.9)}.bar>#q{flex:1 1 230px;min-width:200px}.cb{position:relative;flex:1 1 210px;min-width:190px;max-width:320px}.cbi{box-sizing:border-box;width:100%;font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:7px 50px 7px 10px;margin:0;text-overflow:ellipsis}.cbi:focus{outline:2px solid color-mix(in srgb,var(--ac2) 55%,transparent);outline-offset:0;border-color:var(--ac2)}.cbi::placeholder{color:var(--tx);opacity:.8}.cb .cbi:focus::placeholder{color:var(--mu)}
+.cbx,.cbc{position:absolute;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--mu);user-select:none;line-height:1}.cbc{right:10px;font-size:12px}.cbx{right:28px;font-size:17px;padding:0 3px}.cbx:hover{color:var(--ac)}.cbx[hidden]{display:none}
+.cbl{position:absolute;left:0;top:calc(100% + 4px);min-width:100%;width:max-content;max-width:min(440px,92vw);max-height:300px;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.2);padding:4px;z-index:50}.cbl[hidden]{display:none}
+.cbo{padding:7px 10px;border-radius:7px;cursor:pointer;font-size:13.5px}.cbo.hl{background:color-mix(in srgb,var(--ac2) 13%,transparent)}.cbo.sel{font-weight:650;color:var(--ac2)}.cbo mark{background:none;color:var(--ac2);font-weight:700}.cbn{padding:10px;color:var(--mu);font-size:13px}
+header{max-width:1280px;margin:0 auto;padding:18px 20px 6px}.hbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px;min-width:0}
 .logo{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#ee4045,#b3171d);box-shadow:0 6px 14px rgba(217,38,44,.28)}
 header h1{margin:0;font-size:21px;line-height:1.15;font-weight:750;letter-spacing:-.01em}.bs{display:block;color:var(--mu);font-size:12.5px;margin-top:3px}
 #lu{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0}.pl{display:inline-flex;gap:6px;align-items:baseline;margin:0;background:var(--card);border:1px solid var(--bd);border-radius:99px;padding:4px 12px;font-size:12px;color:var(--tx);text-decoration:none}.pl i{font-style:normal;color:var(--mu)}.pl b{font-weight:650}.pl.ok b{color:#16a34a}.pl.no b{color:var(--ac)}.pl.lk{color:var(--ac2);font-weight:600}.pl.v{color:var(--mu)}
@@ -73,7 +77,7 @@ header h1{margin:0;font-size:21px;line-height:1.15;font-weight:750;letter-spacin
 <div class="kpis" id="kp"></div>
 <div class="nt" id="nt" hidden></div>
 <div id="asx"></div>
-<div class="dbh"><div class="chips" id="ch"></div><button id="gm">Lihat daftar member \u2192</button></div>
+<div class="dbh"><div class="chips" id="ch"></div><button id="gm">Lihat daftar member →</button></div>
 <div class="sm" id="sm"></div>
 </main>
 <main id="m1" hidden>
@@ -104,7 +108,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const pic=r=>r[5]<0?["–","Belum ada PIC"]:S[r[5]];
 const wa=p=>{p=String(p).replace(/\D/g,"");if(p[0]==="0")p="62"+p.slice(1);else if(p.slice(0,2)!=="62")p="62"+p;return "https://wa.me/"+p};
 const COLS=[["PIC Salper ID",r=>pic(r)[0],0],["PIC Salper Name",r=>pic(r)[1],0],["No Member",r=>r[0],0],["Nama Customer",r=>r[1],0],["No WA",r=>r[2],0],["Sales YTD",r=>r[3],1],["Ket Pareto",r=>r[4],0],["Follow-up",r=>fd(r)?1:0,0]];
-let sk=5,sd=-1,pg=0,F=R,BASE=R,CHS=[],RS="pb",SHALL=false;let RH=(()=>{try{return localStorage.getItem("rh")==="1"}catch(x){return false}})();const PS=50;let FU={},db=null,user=null,uid="",canW=false,cur=null,wq=Promise.resolve();R.forEach((r,i)=>{if(Array.isArray(r[10]))r[11]=r[10];r[10]=i});const bk=n=>"b"+(Number(String(n).slice(-5))%100);const fd=r=>FU["m"+r[0]]?.s===1;
+let sk=5,sd=-1,pg=0,F=R,BASE=R,CHS=[],RS="pb",SHALL=false;let RH=(()=>{try{return localStorage.getItem("rh")==="1"}catch(x){return false}})();const PS=50;let FU={},db=null,user=null,uid="",canW=false,cur=null,wq=Promise.resolve();R.forEach((r,i)=>{if(Array.isArray(r[10]))r[11]=r[10];r[10]=i;if(r[6]==="")r[6]="-"});const bk=n=>"b"+(Number(String(n).slice(-5))%100);const fd=r=>FU["m"+r[0]]?.s===1;
 $("th").innerHTML=COLS.map((c,i)=>`<th class="${c[2]?"n":""}" data-i="${i}">${c[0]}</th>`).join("");
 $("fp").innerHTML='<option value="">Semua PIC Salper</option><option value="-2">Belum ada PIC</option>'+S.map((s,i)=>`<option value="${i}">${esc(s[1])} (${s[0].split("-")[1]})</option>`).join("");
 const zs=[...new Set(R.map(r=>r[6]))].sort();$("fz").innerHTML='<option value="">Semua Zone</option>'+zs.map(z=>`<option>${z}</option>`).join("");
@@ -162,7 +166,7 @@ document.onkeydown=e=>{if(e.key=="Escape")$("ov").classList.remove("on")};
 $("pv").onclick=()=>{pg--;draw()};$("nx").onclick=()=>{pg++;draw()};
 const UPD=D.u;
 const LU=UPD[0],tgl=s=>new Date(s+"T00:00:00").toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"});
-{const wk=R.some(r=>r[11]&&r[11].length);$("lu").innerHTML=`<span class="pl"><i>Periode</i><b>${LU.per}</b></span><span class="pl"><i>Data diperbarui</i><b>${tgl(LU.at)}</b></span><span class="pl ${wk?"ok":"no"}"><i>Weekly</i><b>${wk?"Tersedia":"Belum ada"}</b></span><a href="#" id="hl" class="pl lk">Riwayat update</a><span class="pl v">v12</span>`}
+{const wk=R.some(r=>r[11]&&r[11].length);$("lu").innerHTML=`<span class="pl"><i>Periode</i><b>${LU.per}</b></span><span class="pl"><i>Data diperbarui</i><b>${tgl(LU.at)}</b></span><span class="pl ${wk?"ok":"no"}"><i>Weekly</i><b>${wk?"Tersedia":"Belum ada"}</b></span><a href="#" id="hl" class="pl lk">Riwayat update</a><span class="pl v">v13</span>`}
 $("hl").onclick=e=>{e.preventDefault();$("md").innerHTML=`<div class="hd"><h2>Riwayat update data</h2><button id="cl">✕ Tutup</button></div><div class="tw" style="margin-top:12px"><table style="min-width:0"><thead><tr><th>Tanggal update</th><th>Periode</th><th>File sumber</th><th class="n">Member</th><th class="n">Ada PIC</th><th class="n">Pareto</th><th class="n">Total Sales</th><th>Oleh</th></tr></thead><tbody>${UPD.map(u=>`<tr style="cursor:default"><td>${tgl(u.at)}</td><td>${u.per}</td><td>${esc(u.file)}</td><td class="n">${N.format(u.n)}</td><td class="n">${N.format(u.pic)}</td><td class="n">${N.format(u.par)}</td><td class="n">${rp(u.sales)}</td><td data-u="${esc(u.by||"")}">–</td></tr>`).join("")}</tbody></table></div><p style="color:var(--mu);font-size:12px">Status follow-up tersimpan terpisah dan tidak hilang saat data diperbarui.</p>`;$("ov").classList.add("on");$("cl").onclick=()=>$("ov").classList.remove("on");fillBy()};
 function fillBy(){const ids=[...new Set(UPD.map(u=>u.by).filter(Boolean))];if(user&&ids.length)user.profiles(ids).then(ps=>document.querySelectorAll("td[data-u]").forEach(td=>{const n=ps[td.dataset.u]?.name;if(n)td.textContent=n})).catch(()=>{})}
 function refresh(){const p=pg;filt();pg=p;draw()}
@@ -228,8 +232,30 @@ const afk=a=>(a[3]||a[2])+"|"+a[0],todayU=()=>{const n=new Date();return Date.UT
 picOf=a=>{let m=a[3]?MM.get(a[3]):null;if(!(m&&m[5]>=0)){const c=PH.get(a[2]),n=NM.get(a[1].trim().toUpperCase());m=c||(n&&n.length===1?n[0]:m)}return m&&m[5]>=0?{id:S[m[5]][0],n:S[m[5]][1]}:{id:"",n:""}},
 tc=s=>String(s).toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase()),
 waMsg=a=>{const h=new Date().getHours(),sp=h<11?"pagi":h<15?"siang":h<18?"sore":"malam",cm=a[7].toLowerCase(),am=/amsen/.test(cm)&&!/kirim/.test(cm),hd="Selamat "+sp+", Bapak/Ibu "+tc(a[1])+", saya hanya mau memastikan apakah barang yang Bapak/Ibu pesan di Mitra10 QBig BSD "+(am?"sudah diterima":"sudah sampai lokasi")+" dengan aman dan sesuai dengan kebutuhan Bapak/Ibu?",tl="Jika ada keperluan lain, silakan hubungi saya, dengan senang hati akan saya bantu.\nTerima kasih",ti=am?"Barang yang sudah diambil:":"Barang yang sudah dikirim:",ln=a[8].map(i=>"- "+N.format(i[2])+" "+i[3]+" "+i[1]),mk=k=>hd+"\n\n"+ti+"\n"+ln.slice(0,k).join("\n")+(k<ln.length?"\n- dan "+(ln.length-k)+" item lainnya":"")+"\n\n"+tl;let k=ln.length;while(k>1&&encodeURIComponent(mk(k)).length>1800)k--;return mk(k)};
+/*COMBO*/
+function combo(sel){const nat=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,"value"),w=document.createElement("div");w.className="cb";
+w.innerHTML='<input class="cbi" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false"><span class="cbx" title="Hapus pilihan" hidden>\u00d7</span><span class="cbc">\u25be</span><div class="cbl" hidden></div>';
+sel.after(w);sel.hidden=true;const inp=w.firstChild,xb=w.querySelector(".cbx"),ls=w.querySelector(".cbl");let hl=-1,items=[];
+const label=()=>{const o=sel.selectedOptions[0];return o&&o.value!==""?o.text:""},sync=()=>{inp.value=label();inp.placeholder=sel.options.length?sel.options[0].text:"Pilih\u2026";xb.hidden=!label()},
+close=()=>{ls.hidden=true;inp.setAttribute("aria-expanded","false");hl=-1;sync()},
+mark=(t,q)=>{const i=q?t.toLowerCase().indexOf(q):-1;return i<0?esc(t):esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+q.length))+"</mark>"+esc(t.slice(i+q.length))},
+paint=()=>[...ls.querySelectorAll(".cbo")].forEach((e,i)=>{e.classList.toggle("hl",i===hl);if(i===hl)e.scrollIntoView({block:"nearest"})}),
+render=q=>{q=(q||"").trim().toLowerCase();items=[...sel.options].filter(o=>q?o.text.toLowerCase().includes(q):true);const cur=nat.get.call(sel);
+ls.innerHTML=items.length?items.map(o=>`<div class="cbo${o.value===cur?" sel":""}" data-v="${esc(o.value)}">${mark(o.text,q)}</div>`).join(""):'<div class="cbn">PIC tidak ditemukan</div>';
+ls.hidden=false;inp.setAttribute("aria-expanded","true");hl=q?(items.length?0:-1):items.findIndex(o=>o.value===cur);paint()},
+pick=v=>{nat.set.call(sel,v);sync();sel.dispatchEvent(new Event("input",{bubbles:true}));sel.dispatchEvent(new Event("change",{bubbles:true}));close();inp.blur()};
+Object.defineProperty(sel,"value",{get(){return nat.get.call(sel)},set(v){nat.set.call(sel,v);sync()},configurable:true});
+inp.onfocus=()=>{inp.select();inp.placeholder="Ketik untuk mencari\u2026";render("")};
+inp.oninput=()=>render(inp.value);
+inp.onkeydown=e=>{if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(ls.hidden)render(inp.value);else{hl=Math.min(Math.max(hl+(e.key==="ArrowDown"?1:-1),0),items.length-1);paint()}}else if(e.key==="Enter"){e.preventDefault();if(!ls.hidden&&items[hl])pick(items[hl].value)}else if(e.key==="Escape"||e.key==="Tab")close()};
+inp.onblur=()=>setTimeout(close,0);
+ls.onmousedown=e=>{e.preventDefault();const o=e.target.closest(".cbo");if(o)pick(o.dataset.v)};
+xb.onmousedown=e=>{e.preventDefault();pick("")};
+w.querySelector(".cbc").onmousedown=e=>{e.preventDefault();if(ls.hidden){inp.focus()}else close()};
+sync()}
+/*ENDCOMBO*/
 function tab(n){["m0","m1","as"].forEach((id,i)=>$(id).hidden=i!==n);["t0","t1","t2"].forEach((id,i)=>$(id).classList.toggle("on",i===n));if(n===2)drawA();window.scrollTo(0,0)}
-function initA(){const ns=[...new Set(A.map(a=>picOf(a).n).filter(Boolean))].sort();$("as_pic").innerHTML='<option value="">Semua PIC</option>'+ns.map(n=>`<option>${esc(n)}</option>`).join("")+'<option value="__none">(Belum ada PIC)</option>'}
+function initA(){const ns=[...new Set(A.map(a=>picOf(a).n).filter(Boolean))].sort();$("as_pic").innerHTML='<option value="">Semua PIC</option>'+ns.map(n=>`<option>${esc(n)}</option>`).join("")+'<option value="__none">(Belum ada PIC)</option>';$("as_pic").value=""}
 function gateA(a){if(ROLE!=="public")return true;const p=picOf(a);if(!p.id){alert("Pengiriman ini belum punya PIC di sheet Frequency & Category. Login sebagai editor/kontributor untuk mengubah status.");return false}const c=prompt("Masukkan 4 digit terakhir Salper ID untuk "+p.n+":");if(c===null)return false;if(c.trim()!==String(p.id).trim().slice(-4)){alert("Kode salah.");return false}return true}
 function togA(i){if(!db||!canW)return;const a=A[i];if(!gateA(a))return;const k=afk(a),pv=AF[k],v={s:pv&&pv.s?0:1,t:Date.now(),u:uid,n:ROLE==="public"?picOf(a).n:(window.UNAME||null)};AF[k]=v;drawA();awq=awq.then(async()=>{const {error}=await sb.from("aftersales_followups").upsert({k,status:v.s,updated_by:uid||null,by_name:v.n||null,updated_at:new Date(v.t).toISOString()});if(error)throw error}).catch(()=>{if(pv)AF[k]=pv;else delete AF[k];drawA();alert("Gagal menyimpan status. Coba lagi.")})}
 async function loadAF(){initA();const o={};for(let f=0;;f+=1000){const {data,error}=await sb.from("aftersales_followups").select("*").range(f,f+999);if(error)throw error;data.forEach(x=>o[x.k]={s:x.status,t:Date.parse(x.updated_at),u:x.updated_by,n:x.by_name});if(data.length<1000)break}
@@ -249,7 +275,7 @@ let L=all.filter(x=>(h==="due"?x.d>=1&&!x.f:h==="h1"?x.d===1:h==="h0"?x.d<=0:h==
 L.sort((p,r)=>p.d-r.d||(p.a[1]<r.a[1]?-1:1));const pages=Math.max(1,Math.ceil(L.length/PSA));apg=Math.min(Math.max(apg,0),pages-1);
 $("acl").innerHTML=L.slice(apg*PSA,apg*PSA+PSA).map(cardA).join("")||'<div class="ac" style="color:var(--mu)">Tidak ada pengiriman untuk filter ini.</div>';
 $("ainf").textContent=N.format(L.length)+" pengiriman \u00b7 hal "+(apg+1)+"/"+pages;$("apv").disabled=apg<=0;$("anx").disabled=apg>=pages-1}
-$("t0").onclick=()=>tab(0);$("t1").onclick=()=>tab(1);$("t2").onclick=()=>tab(2);$("gm").onclick=()=>tab(1);$("asx").onclick=e=>{if(e.target.closest("#asgo"))tab(2)};$("rst").onclick=()=>{["fp","fz","fk","fs"].forEach(i=>$(i).value="");$("q").value="";filt()};
+combo($("fp"));combo($("as_pic"));$("t0").onclick=()=>tab(0);$("t1").onclick=()=>tab(1);$("t2").onclick=()=>tab(2);$("gm").onclick=()=>tab(1);$("asx").onclick=e=>{if(e.target.closest("#asgo"))tab(2)};$("rst").onclick=()=>{["fp","fz","fk","fs"].forEach(i=>$(i).value="");$("q").value="";filt()};
 ["aq","ah","as_pic"].forEach(id=>$(id).oninput=()=>{apg=0;drawA()});
 $("apv").onclick=()=>{apg--;drawA()};$("anx").onclick=()=>{apg++;drawA()};
 $("acl").onclick=e=>{const b=e.target.closest(".fu");if(b){togA(+b.dataset.a);return}const m=e.target.closest(".mb");if(m){e.preventDefault();const r=MM.get(m.dataset.m);if(r)detail(r)}};
